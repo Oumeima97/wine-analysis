@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  wine-db:
+    container_name: wine-db
+    image: postgres:11-alpine
+    volumes:
+      - wine_data:/var/lib/postgresql/wine_data
+    restart: always
+    env_file:
+      - database.env
+
+  process:
+    container_name: process-service
+    depends_on:
+      - wine-db
+    command: ["./wait-for-it.sh", "wine-db:5432", "--", "python", "process.py"]
+    image: wine-analysis/process:latest
+    build: 
+      context: ./
+      dockerfile: ./src/process/Dockerfile
+
+volumes:
+  wine_data:
