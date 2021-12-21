@@ -14,7 +14,7 @@ services:
     container_name: process-service
     depends_on:
       - wine-db
-    command: ["./wait-for-it.sh", "wine-db:5432", "--", "python", "process.py"]
+    command: ["./wait-for-it.sh", "wine-db:5432", "--", "python", "main.py"]
     image: wine-analysis/process:latest
     build: 
       context: ./
